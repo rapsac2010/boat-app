@@ -8341,3 +8341,39 @@ h1, h2, h3, h4, h5,
         border: 1px solid transparent;
         background: #e3b04b;
         color: #fff; }
+
+/* Booking styles */
+.card-body .bookings p {
+  margin-bottom: 0.25rem; /* Adjust spacing between paragraphs */
+  font-size: 0.9rem; /* Adjust font size */
+}
+
+.data-value {
+  display: block;
+  margin-left: 20px; /* adjust the margin as needed */
+}
+
+.card-body .bookings p strong {
+  font-weight: 500; /* Adjust font weight */
+  color: #333; /* Adjust font color */
+}
+
+.past-bookings .accordion-button {
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+.past-bookings .accordion-body {
+    background-color: #f0f0f0;
+}
+
+/* Style for the arrow */
+.accordion-arrow {
+  float: right;
+  transition: transform 0.3s ease-in-out;
+}
+
+a[aria-expanded="true"] .accordion-arrow {
+  transform: rotate(180deg);
+}
+
