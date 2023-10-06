@@ -69,7 +69,7 @@
         </div>
         <!-- Avatar -->
         <div class="dropdown">
-            <+
+            <a
                 class="dropdown-toggle d-flex align-items-center"
                 href="#"
                 id="dropdownMenuButton1"
@@ -78,9 +78,9 @@
                 aria-expanded="false"
             >
                 <img
-                    src={{os.path.join(current_app.config['UPLOAD_FOLDER'], g.user['profile_fname']) }}
+                    src="{{ pf_path }}"
                     class="rounded-circle"
-                    height="25"
+                    height="40"
                     alt="avatar"
                     loading="lazy"
                 />

@@ -54,3 +54,6 @@ CREATE TABLE register_codes (
 
 -- TODO: remove before deployment
 INSERT INTO register_codes (code, class, max_uses, current_uses) VALUES ('dev', 'user', 999, 0);
+
+INSERT INTO boat (id, boat_id, longitude, latitude, speed, voltage, amperage, renter_id)
+VALUES (2, 1, 4.873, 52.385538, 0.0, 27, 34, NULL);
