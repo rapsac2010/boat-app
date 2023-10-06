@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>E-Boat rental by Caspar & Wouter</title>
+
+
+    <link rel="icon" href="../assets/logo_basic.png" type="image/x-icon" />
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="css/style.css" />
+    
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- Google Fonts Roboto -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+    />
+    <!-- MDB -->
+    <link rel="stylesheet" href="css/mdb.min.css" />
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  </head>
+
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <!-- Container wrapper -->
+      <div class="container-fluid">
+        <!-- Toggle button -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-mdb-toggle="collapse"
+          data-mdb-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <!-- Navbar brand -->
+          <a class="navbar-brand mt-2 mt-lg-0" href="#">
+            <img
+              src="../assets/logo_basic.png"
+              height="50"
+              alt="eboat logo"
+              loading="lazy"
+            />
+          </a>
+          <!-- Left links -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Calendar.html">Calendar</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">My Bookings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+          </ul>
+          <!-- Left links -->
+        </div>
+        <!-- Collapsible wrapper -->
+
+        <!-- Right elements -->
+        <div class="d-flex align-items-center">
+          <!-- Icon -->
+          <!-- <a class="text-reset me-3" href="#">
+            <i class="fas fa-shopping-cart"></i>
+          </a> -->
+
+          <!-- Notifications -->
+          <div class="dropdown">
+            <a
+              class="text-reset me-3 dropdown-toggle hidden-arrow"
+              href="#"
+              id="navbarDropdownMenuLink"
+              role="button"
+              data-mdb-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fas fa-bell"></i>
+              <span class="badge rounded-pill badge-notification bg-danger">1</span>
+            </a>
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="navbarDropdownMenuLink"
+            >
+              <li>
+                <a class="dropdown-item" href="#">Some news</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">Another news</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </li>
+            </ul>
+          </div>
+          <!-- Avatar -->
+          <div class="dropdown">
+            <a
+              class="dropdown-toggle d-flex align-items-center hidden-arrow"
+              href="#"
+              id="navbarDropdownMenuAvatar"
+              role="button"
+              data-mdb-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <img
+                src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                class="rounded-circle"
+                height="25"
+                alt="Black and White Portrait of a Man"
+                loading="lazy"
+              />
+            </a>
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="navbarDropdownMenuAvatar"
+            >
+              <li>
+                <a class="dropdown-item" href="#">My profile</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">Settings</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- Right elements -->
+      </div>
+      <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+
+    <main style="margin-top: 58px">
+      <div class="container pt-4">
+          <h2>My Bookings</h2>
+          <hr>
+          
+          <!-- Upcoming Bookings -->
+          <h4>Upcoming Bookings</h4>
+          <div id="upcomingBookingsAccordion" role="tablist">
+              <div class="card">
+                <div class="card-header" role="tab" id="headingOne">
+                  <h5 class="mb-0">
+                      <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                          Saturday 2 December
+                          <span class="accordion-arrow">&darr;</span>
+                      </a>
+                  </h5>
+                </div>
+                <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#upcomingBookingsAccordion">
+                    <div class="card-body bookings">
+                      <p><strong>Booking Date:</strong> <span class="data-value">2-12-2023</span></p>
+                      <p><strong>Time of Booking Made:</strong> <span class="data-value">29-11-2023</span></p>
+                      <p><strong>Payed:</strong> <span class="data-value">Yes</span></p>
+                      <p><strong>Weather Prediction:</strong> <span class="data-value">Sunny, 11 degrees</span></p>
+                      <button type="button" class="btn btn-danger mt-3">Cancel Booking</button>
+                    </div>
+                </div>
+              </div>
+          </div>
+          
+          <!-- Past Bookings -->
+          <h4 class="mt-4">Past Bookings</h4>
+          <div id="pastBookingsAccordion" role="tablist">
+              <div class="card">
+                  <div class="card-header" role="tab" id="headingPastOne">
+                      <h5 class="mb-0">
+                          <a class="collapsed" data-toggle="collapse" href="#collapsePastOne" aria-expanded="false" aria-controls="collapsePastOne">
+                              Sunday 1 October
+                              <span class="accordion-arrow">&darr;</span>
+                          </a>
+                      </h5>
+                  </div>
+                  <div id="collapsePastOne" class="collapse" role="tabpanel" aria-labelledby="headingPastOne">
+                    <div class="card-body bookings">
+                      <p><strong>Booking Date:</strong> <span class="data-value">1-11-2023</span></p>
+                      <p><strong>Time of Booking Made:</strong> <span class="data-value">28-10-2023</span></p>
+                      <p><strong>Payed:</strong> <span class="data-value">Yes</span></p>
+                      <p><strong>Weather Prediction:</strong> <span class="data-value">Rainy, 16 degrees</span></p>
+                    </div>
+                  </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header" role="tab" id="headingPastTwo">
+                    <h5 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" href="#collapsePastTwo" aria-expanded="false" aria-controls="collapsePastTwo">
+                            Friday 15 September
+                            <span class="accordion-arrow">&darr;</span>
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapsePastTwo" class="collapse" role="tabpanel" aria-labelledby="headingPastTwo">
+                  <div class="card-body bookings">
+                    <p><strong>Booking Date:</strong> <span class="data-value">15-9-2023</span></p>
+                    <p><strong>Time of Booking Made:</strong> <span class="data-value">10-9-2023</span></p>
+                    <p><strong>Payed:</strong> <span class="data-value">Yes</span></p>
+                    <p><strong>Weather Prediction:</strong> <span class="data-value">Overcast, 21 degrees</span></p>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </main>
+
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <!-- MDB -->
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+    <!-- Custom scripts -->
+    <script type="text/javascript"></script>
+  </body>
+</html>

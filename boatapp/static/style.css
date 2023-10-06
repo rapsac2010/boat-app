@@ -1,0 +1,53 @@
+
+/* Booking styles */
+.card-body .bookings p {
+  margin-bottom: 0.25rem; /* Adjust spacing between paragraphs */
+  font-size: 0.9rem; /* Adjust font size */
+}
+
+.data-value {
+  display: block;
+  margin-left: 20px; /* adjust the margin as needed */
+}
+
+.card-body .bookings p strong {
+  font-weight: 500; /* Adjust font weight */
+  color: #333; /* Adjust font color */
+}
+
+.past-bookings .accordion-button {
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+.past-bookings .accordion-body {
+    background-color: #f0f0f0;
+}
+
+/* Style for the arrow */
+.accordion-arrow {
+  float: right;
+  transition: transform 0.3s ease-in-out;
+}
+
+a[aria-expanded="true"] .accordion-arrow {
+  transform: rotate(180deg);
+}
+
+.myDivIcon {
+  text-align: center;
+  color:#004085;
+  border-color: #000;
+  border-radius: 1px;
+  /* Horizontally center the text (icon) */
+  line-height: 10px;
+  /* Vertically center the text (icon) */
+}
+
+.form-control-picture-upload {
+  height: auto !important;
+}
+
+#navbarDropdownMenuLink {
+  text-decoration: none;
+}

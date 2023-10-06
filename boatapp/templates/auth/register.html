@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style_login.css') }}">
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="wrap d-md-flex">
+                    <div class="img" style="background-image: url({{ url_for('static', filename='site/register_cover.jpg') }});">
+                    </div>
+                    <div class="login-wrap p-4 p-md-5">
+                        <div class="d-flex">
+                            <div class="w-100">
+                                <h3 class="mb-4">Sign Up</h3>
+                            </div>
+                        </div>
+                        <form method = 'post' class="signin-form" enctype="multipart/form-data">
+                            <div class="form-group mb-2">
+                                <label class="label" for="registration">Registration code:</label>
+                                <input name = 'registration' type="text" class="form-control" placeholder="Secret123"
+                                value = '{{ request.form["registration"] }}' required>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="label" for="username">Username</label>
+                                <input name="username" type="text" class="form-control" placeholder="Username"  
+                                value = '{{ request.form["username"] }}' required>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="label" for="email">Email</label>
+                                <input name="email" type="email" class="form-control" placeholder="Email"
+                                value = '{{ request.form["email"] }}' required>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="label" for="first_name">First Name</label>
+                                <input name="first_name" type="text" class="form-control" placeholder="First Name"
+                                value = '{{ request.form["first_name"] }}' required>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="label" for="last_name">Last Name</label>
+                                <input name="last_name" type="text" class="form-control" placeholder="Last Name"
+                                value = '{{ request.form["last_name"] }}' required>
+                            </div>
+                            <div class="form-group mb-2">
+                                <strong><p id="passwordError" style="color: red;"></p></strong>
+                                <label class="label" for="password">Password</label>
+                                <input name="password" type="password" class="form-control" placeholder="Password" required>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="label" for="password2">Confirm Password</label>
+                                <input name="password2" type="password" class="form-control" placeholder="Repeat Password" required>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="label" for="profile_picture">Profile Picture (optional)</label>
+                                <input name = "file" type="file" class="form-control form-control-picture-upload" name="profile_picture" accept="image/*">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign Up</button>
+                            </div>
+                        </form>
+                        <p class="text-center">Already a member? <a data-toggle="tab" href="{{ url_for('auth.login') }}">Sign In</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector(".signin-form");
+        const passwordInput = form.querySelector("input[name='password']");
+        const passwordCheckInput = form.querySelector("input[name='password2']");
+        const passwordError = document.getElementById("passwordError");  // Added line
+    
+        form.addEventListener("submit", function(event) {
+            if (passwordInput.value !== passwordCheckInput.value) {
+                event.preventDefault();
+                passwordError.textContent = "Passwords do not match!";  // Modified line
+            }
+            else{
+                passwordError.textContent = "";  // Clears error message if passwords match
+            }
+        });
+    
+        // Optionally: clear the error message when user starts typing
+        passwordCheckInput.addEventListener("input", function() {
+            passwordError.textContent = "";
+        });
+    });
+    </script>
+{% endblock %}

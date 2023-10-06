@@ -1,0 +1,102 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <!-- Container wrapper -->
+  <div class="container-fluid">
+      <!-- Toggle button -->
+      <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarTogglerDemo03"
+          aria-controls="navbarTogglerDemo03"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+      >
+          <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar brand -->
+      <a class="navbar-brand" href="#">
+          <img
+              src="{{ url_for('static', filename='site/logo_basic.png') }}"
+              height="50"
+              alt="eboat logo"
+              loading="lazy"
+          />
+      </a>
+
+      <!-- Collapsible wrapper -->
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+          <!-- Navbar links -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                  <a class="nav-link" href="#">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="Calendar.html">Calendar</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="myBookings.html">My Bookings</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#">About</a>
+              </li>
+          </ul>
+          <!-- Navbar links -->
+      </div>
+      <!-- Collapsible wrapper -->
+
+      <!-- Right elements -->
+      <div class="d-flex align-items-center">
+        <!-- Notifications -->
+        <div class="dropdown">
+            <a
+                class="text-reset me-3 dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+            >
+                <i class="bi bi-bell-fill"></i>
+                <span class="badge bg-danger">3</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" href="#">Some news</a></li>
+                <li><a class="dropdown-item" href="#">Another news</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </div>
+        <!-- Avatar -->
+        <div class="dropdown">
+            <a
+                class="dropdown-toggle d-flex align-items-center"
+                href="#"
+                id="dropdownMenuButton1"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+            >
+                <img
+                    src="{{ pf_path }}"
+                    class="rounded-circle"
+                    height="40"
+                    alt="avatar"
+                    loading="lazy"
+                />
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">My profile</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
+            </ul>
+        </div>
+      </div>
+      <!-- Right elements -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+
+
+
+
