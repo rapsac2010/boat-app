@@ -24,6 +24,9 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
+    <link rel="stylesheet" href="css/style.css" />
+    
+
   </head>
   <body>
     <!-- Navbar -->
@@ -171,7 +174,7 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between px-md-1">
                     <div>
-                      <h3 class="text-success">64.89 %</h3>
+                      <h3 class="text-success">64 %</h3>
                       <p class="mb-0">Battery Percentage</p>
                     </div>
                     <div class="align-self-center">
@@ -265,9 +268,15 @@
               L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               }).addTo(map);
+              
+              const fontAwesomeIcon = L.divIcon({
+                html: '<i class="fa fa-sailboat fa-2x"></i>',
+                iconSize: [20, 20],
+                className: 'myDivIcon'
+              });
 
               // Add a marker
-              L.marker([52.385538, 4.873]).addTo(map)
+              L.marker([52.385538, 4.873], {icon: fontAwesomeIcon}).addTo(map)
                   .openPopup();
           });
         </script>

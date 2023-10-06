@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% include 'nav.html' %}
+
+
+{% block header %}
+    <h1> {% block title %}Posts{% endblock %}</h1>
+    {% if g.user %}
+        <a class="action" href = "{{ url_for('blog.create') }}">New</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<main style="margin-top: 58px">
+    <div class="container pt-4">
+      <!--Section: Minimal statistics cards-->
+      <section>
+        <div class="row">
+          <div class="col-xl-3 col-sm-6 col-12 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between px-md-1">
+                  <div>
+                    <h3 class="text-success">64 %</h3>
+                    <p class="mb-0">Battery Percentage</p>
+                  </div>
+                  <div class="align-self-center">
+                    <i class="fas fa-battery-three-quarters text-success fa-3x"></i>
+                  </div>
+                </div>
+                <div class="px-md-1">
+                  <div class="progress mt-3 mb-1 rounded" style="height: 7px">
+                    <div
+                         class="progress-bar bg-success"
+                         role="progressbar"
+                         style="width: 60%"
+                         aria-valuenow="60"
+                         aria-valuemin="0"
+                         aria-valuemax="100"
+                         ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 col-12 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between px-md-1">
+                  <div class="align-self-center">
+                    <i class="fas fa-bolt text-warning fa-3x"></i>
+                  </div>
+                  <div class="text-end">
+                    <h3>35.4A</h3>
+                    <p class="mb-0">Amperage</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 col-12 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between px-md-1">
+                  <div class="align-self-center">
+                    <i class="fas fa-bolt text-warning fa-3x"></i>
+                  </div>
+                  <div class="text-end">
+                    <h3>22.3V</h3>
+                    <p class="mb-0">Voltage</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 col-12 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between px-md-1">
+                  <div class="align-self-center">
+                    <i class="fas fa-clock text-info fa-3x"></i> <!-- Changed icon and color -->
+                  </div>
+                  <div class="text-end">
+                    <h3>15m</h3> <!-- Placeholder value -->
+                    <p class="mb-0">Since last transmission</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+      <!--Section: Map with gps marker -->
+      <!--Section: Map with gps marker -->
+      <section class="mb-4">
+        <div class="card">
+            <div class="card-header text-center py-3">
+                <h5 class="mb-0 text-center"><strong>Current Boat Location</strong></h5>
+            </div>
+            <div class="card-body">
+                <div class="map-container-3" style="height: 400px;">
+                    <div id="map-with-gps" style="width: 100%; height: 100%;"></div>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize the map
+            var map = L.map('map-with-gps').setView([52.385538, 4.873], 14);  // setView([latitude, longitude], zoomLevel);
+
+            // Load and display tile layer on the map
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            const fontAwesomeIcon = L.divIcon({
+              html: '<i class="fa fa-sailboat fa-2x"></i>',
+              iconSize: [20, 20],
+              className: 'myDivIcon'
+            });
+
+            // Add a marker
+            L.marker([52.385538, 4.873], {icon: fontAwesomeIcon}).addTo(map)
+                .openPopup();
+        });
+      </script>
+
+
+      <!--Section: latest image transmission -->
+      <section class="mb-4">
+        <div class="card">
+            <div class="card-header text-center py-3">
+                <h5 class="mb-0 text-center"><strong>Latest docked image</strong></h5>
+            </div>
+            <div class="card-body">
+                <div class="map-container-3">
+                    <figure id="docked-boat-image" class="text-center">
+                        <!-- Placeholder image: replace the 'src' attribute with the path to your image. -->
+                        <img src={{ url_for('static', filename='site/boat-docked-sample.jpg') }} alt="Image of the latest docked boat" class="img-fluid">
+                        <!-- Caption for the image -->
+                    </figure>
+                </div>
+            </div>
+        </div>
+      <!--Section: Minimal statistics cards-->
+  
+      <!--Section: Statistics with subtitles-->
+    </div>
+  </main>
+  <!-- MDB -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Custom scripts -->
+  <script type="text/javascript"></script>
+{% endblock %}
