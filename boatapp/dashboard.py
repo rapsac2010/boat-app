@@ -17,7 +17,7 @@ def index():
         pf_path = url_for('static', filename=f"uploads/images/{g.user['profile_fname']}")
         return render_template('dashboard/index.html', pf_path = pf_path)
     else:
-        return 0
+        return redirect(url_for('auth.login'))
     
 
 

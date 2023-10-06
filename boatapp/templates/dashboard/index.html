@@ -159,7 +159,11 @@
     
                     document.querySelector('.amperage').textContent = `${data.amperage}A`;
                     document.querySelector('.voltage').textContent = `${data.voltage}V`;
-                    document.querySelector('.last-transmission').textContent = `${data.lastTransmission}m`;
+                    if (data.lastTransmission > 120) {
+                      document.querySelector('.last-transmission').textContent = "No recent updates";
+                    } else {
+                        document.querySelector('.last-transmission').textContent = `${data.lastTransmission}m`;
+                    }
     
                     // Check if data contains latitude and longitude, then update marker.
                     if (data.latitude && data.longitude) {
