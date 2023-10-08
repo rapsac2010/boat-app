@@ -16,7 +16,7 @@
       </button>
 
       <!-- Navbar brand -->
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="{{ url_for('index') }}">
           <img
               src="{{ url_for('static', filename='site/logo_basic.png') }}"
               height="50"
@@ -30,10 +30,10 @@
           <!-- Navbar links -->
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                  <a class="nav-link" href="#">Dashboard</a>
+                  <a class="nav-link" href="{{ url_for('index') }}">Dashboard</a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link" href="Calendar.html">Calendar</a>
+                  <a class="nav-link" href="{{ url_for('dashboard.calendar') }}">Calendar</a>
               </li>
               <li class="nav-item">
                   <a class="nav-link" href="myBookings.html">My Bookings</a>
