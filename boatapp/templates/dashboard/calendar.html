@@ -2,20 +2,9 @@
 {% include 'nav.html' %}
 
 {% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
-<script>
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridWeek',
-      height: "60vh",
-      events: "{{ url_for('dashboard.get_reservations') }}}"
-    });
-    calendar.render();
-  });
-
-</script>
 
 <main style="margin-top: 58px">
     <div class = "container pt-4">
@@ -30,5 +19,78 @@
         </div>
       </section>      
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="bookingModalLabel">New Booking</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Your booking form goes here -->
+            <form id="bookingForm">
+              <!-- You can populate date input fields using JavaScript when opening the modal -->
+              <div class="form-group">
+                <label for="startDate">Start Date:</label>
+                <input type="text" class="form-control" id="startDate" readonly>
+              </div>
+              <div class="form-group">
+                <label for="endDate">End Date:</label>
+                <input type="text" class="form-control" id="endDate" readonly>
+              </div>
+              <!-- Other form fields for booking details... -->
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="submitBookingForm()">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </main>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          locale: 'nl',
+          firstDay: '1',
+          initialView: 'timeGridWeek',
+          height: "auto",
+          events: {
+            url: "{{ url_for('dashboard.get_reservations') }}"
+          },
+          slotDuration: '1:00:00',
+          slotMinTime: '09:00:00',
+          slotMaxTime: '24:00:00',
+          selectable: true,
+          selectConstraint: {
+              start: '00:00', 
+              end: '24:00', 
+          },
+          dateClick: function(info) {
+            // This function is called when a day cell is clicked.
+            openBookingForm(info.dateStr);
+          },
+        });
+        calendar.render();
+      });
+      
+      var myModal = new bootstrap.Modal(document.getElementById('bookingModal'), {});
+    
+      function openBookingForm(start, end) {
+        document.getElementById('startDate').value = start;
+        document.getElementById('endDate').value = end || start;
+    
+        myModal.show();
+      }
+    
+      function submitBookingForm() {
+        // Submit the form data to your server, etc.
+        console.log("Submit Clicked");
+        myModal.hide();
+      }
+    </script>
 {% endblock content %}

@@ -51,32 +51,39 @@ def get_update_data():
 def get_reservations():
     db = get_db()
 
-    current_time = datetime.now()
-    one_week_ago = current_time - timedelta(weeks=1)
-    str_one_week_ago = one_week_ago.strftime('%Y-%m-%d %H:%M:%S')
+    # Retrieve start and end params from the request URL
+    start_date_str = request.args.get('start', '')
+    end_date_str = request.args.get('end', '')
+
+    try:
+        start_date = datetime.fromisoformat(start_date_str)
+        end_date = datetime.fromisoformat(end_date_str)
+    except ValueError:
+        return jsonify(error="Invalid date format"), 400
     
+
     reservations = db.execute(
         """
         SELECT * FROM reservations
-        WHERE start_time >= ?
+        WHERE start_time >= ? AND end_time <= ?
         """,
-        (str_one_week_ago,)
+        (start_date, end_date)
     ).fetchall()
 
     close_db()
 
     # Convert events to a format suitable for FullCalendar
-    reserve_list = []
-    for event in reservations:
-        reserve_list.append({
+    reserve_list = [
+        {
             "title": f"Reservation {event[0]}",
-            "start": event[3],
-            "end": event[4],
+            "start": event[3].isoformat(),
+            "end": event[4].isoformat(),
             "boatId": event[1],
             "renterId": event[2]
-        })
+        }
+        for event in reservations
+    ]
     
-    print(f"{reserve_list} reservations")
     # Return events as JSON
     return jsonify(reserve_list)
 
