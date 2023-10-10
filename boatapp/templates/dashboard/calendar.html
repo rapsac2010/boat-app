@@ -22,33 +22,45 @@
     <!-- Modal -->
     <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="bookingModalLabel">New Booking</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <!-- Your booking form goes here -->
-            <form id="bookingForm">
-              <!-- You can populate date input fields using JavaScript when opening the modal -->
-              <div class="form-group">
-                <label for="startDate">Start Date:</label>
-                <input type="text" class="form-control" id="startDate" readonly>
+          <div class="modal-content">
+              <div class="modal-image">
+                  <img src="{{ url_for('static', filename='site/booking_photo.jpg') }}" alt="Descriptive alt text" class="img-fluid rounded-top">
               </div>
-              <div class="form-group">
-                <label for="endDate">End Date:</label>
-                <input type="text" class="form-control" id="endDate" readonly>
+              <div class="modal-header">
+                  <h5 class="modal-title" id="bookingModalLabel">New Reservation</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <!-- Other form fields for booking details... -->
-            </form>
+              <form id="bookingForm" action="{{ url_for('reservations.create') }}" method = "POST">
+                <div class="modal-body">
+                  <!-- Your booking form goes here -->
+                      <div class="form-group">
+                          <label for="price">Price:</label>
+                          <input type="text" class="form-control" name="price" id="price" value="€39" readonly>
+                      </div>
+                      <!-- Booking Date -->
+                      <div class="form-group">
+                          <label for="book-date">Booking date:</label>
+                          <input type="text" class="form-control" name="book-date" id="book-date" readonly>
+                      </div>
+                      <!-- TODO: Discount code entry -->
+                      <div class="form-group">
+                          <label for="discount-code">Discount Code:</label>
+                          <input type="text" class="form-control" name="discount-code" id="discount-code" placeholder="Enter your discount code here">
+                      </div>
+                      <!-- Other form fields for booking details... -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary">Apply discount code</button>
+                    <button type="submit" class="btn btn-primary">Continue to Payment</button>
+                </div>
+              </form>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="submitBookingForm()">Save changes</button>
-          </div>
-        </div>
       </div>
-    </div>
+  </div>
+  
+  
+  
 </main>
     <script>
 
@@ -60,7 +72,7 @@
           initialView: 'timeGridWeek',
           height: "auto",
           events: {
-            url: "{{ url_for('dashboard.get_reservations') }}"
+            url: "{{ url_for('reservations.get_reservations') }}"
           },
           slotDuration: '1:00:00',
           slotMinTime: '09:00:00',
@@ -77,15 +89,17 @@
         });
         calendar.render();
       });
-      
+
       var myModal = new bootstrap.Modal(document.getElementById('bookingModal'), {});
     
       function openBookingForm(start, end) {
-        document.getElementById('startDate').value = start;
-        document.getElementById('endDate').value = end || start;
-    
+        // Parse the date string and create a Date object
+        let date = new Date(start);
+        let options = { day: 'numeric', month: 'long', year: 'numeric' };
+        let formattedDate = date.toLocaleDateString('id-ID', options); 
+        document.getElementById('book-date').value = formattedDate;
         myModal.show();
-      }
+    }
     
       function submitBookingForm() {
         // Submit the form data to your server, etc.

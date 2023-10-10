@@ -51,3 +51,12 @@ a[aria-expanded="true"] .accordion-arrow {
 #navbarDropdownMenuLink {
   text-decoration: none;
 }
+
+.text-price {
+  color: #ff9100 !important;
+}
+
+.modal-header .modal-title {
+  width: 100%;
+  text-align: center;
+}

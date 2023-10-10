@@ -16,9 +16,9 @@
             </div>
 
             <div class="mb-3">
-              <button id="toggleBoat" class="btn btn-lg w-100 {{ 'btn-success' if boat_control.boat_on_desired == 1 else 'btn-danger' }}" data-status="{{ 'on' if boat_control.boat_on_desired == 1 else 'off' }}">
-                <i class="fas fa-power-off"></i> <span id="boatButtonText">{{ 'Stop Boat' if boat_control.boat_on_desired == 1 else 'Start Boat' }}</span>
-              </button>
+                <button id="toggleBoat" class="btn btn-success btn-lg w-100">
+                  <i class="fas fa-power-off"></i> <span id="boatButtonText">Start Boat</span>
+                </button>
             </div>
 
             <div id="extraControls" style="display: none;">
@@ -224,69 +224,73 @@
         // Start the function after the document has fully loaded
         fetchDataAndUpdateUI();
 
-        const toggleBoatButton = document.getElementById("toggleBoat");
-        const extraControls = document.getElementById("extraControls");
-        const hornButton = document.getElementById("horn");
-        const otherButtons = Array.from(document.querySelectorAll("#extraControls button:not(#horn)"));
-        
-        const updateExtraControlsVisibility = () => {
-            extraControls.style.display = (toggleBoatButton.getAttribute("data-status") === "on") ? "block" : "none";
-        };
+        let boatStarted = false;  // State flag for boat status
+        const extraControls = document.getElementById('extraControls');
     
-        const updateControlState = (controlId, newState) => {
-            // Post to the server about the state change
-            fetch('/your-endpoint-url', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({control: controlId, state: newState})
-            })
-            // .then(...) handle server response if necessary
-            .catch(err => console.error(err));
-        };
+        document.getElementById('toggleBoat').addEventListener('click', function() {
+          boatStarted = !boatStarted;
+      
+          // Reference the span to change only the text, not the icon
+          document.getElementById('boatButtonText').textContent = boatStarted ? 'Stop Boat' : 'Start Boat';
+          
+          this.classList.toggle('btn-danger', boatStarted);
+          this.classList.toggle('btn-success', !boatStarted);
+          extraControls.style.display = boatStarted ? 'block' : 'none';
+          
+          // Send status to the server
+          const status = boatStarted ? 'start' : 'stop';
+          sendBoatCommand(`/control_boat/${status}`);
+      });
     
-        toggleBoatButton.addEventListener("click", function() {
-            toggleButtonState(this);
-            updateExtraControlsVisibility();
-            updateControlState(this.id, this.getAttribute("data-status"));
-            // set class to btn-success if data-status is on and btn-danger if data-status is off
+        document.getElementById('enginePower').addEventListener('click', function() {
+            sendBoatCommand('/toggle_engine_power');
         });
     
-        otherButtons.forEach(button => {
-            button.addEventListener("click", function() {
-                toggleButtonState(this);
-                updateControlState(this.id, this.getAttribute("data-status"));
-            });
+        document.getElementById('toggleInverter').addEventListener('click', function() {
+            sendBoatCommand('/toggle_inverter');
         });
     
-        hornButton.addEventListener("mousedown", function() {
-            // ... Change to red, emit a request to beep the horn, etc.
-            
+        document.getElementById('horn').addEventListener('click', function() {
+            sendBoatCommand('/toggle_horn');
         });
-        hornButton.addEventListener("mouseup", function() {
-            // ... Change back to the default yellow color.
+    
+        document.getElementById('navLights').addEventListener('click', function() {
+            sendBoatCommand('/toggle_nav_lights');
+        });
+    
+        document.getElementById('funLights').addEventListener('click', function() {
+            sendBoatCommand('/toggle_fun_lights');
         });
         
-        // Initial setup
-        updateExtraControlsVisibility();
+        function sendBoatCommand(endpoint) {
+            fetch(endpoint, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        document.getElementById('horn').addEventListener('click', function() {
+          this.classList.remove('btn-warning');
+          this.classList.add('btn-danger');
+          setTimeout(() => {
+              this.classList.remove('btn-danger');
+              this.classList.add('btn-warning');
+          }, 500); // Change the color back after 500ms
+      });
+      
+        document.querySelectorAll('.btn-toggle').forEach(button => {
+          button.addEventListener('click', function() {
+              const isActive = this.getAttribute('data-status') === 'on';
+              this.setAttribute('data-status', isActive ? 'off' : 'on');
+              this.classList.toggle('btn-success', !isActive);
+          });
+      });
+    
     });
-    
-    const toggleButtonState = (button) => {
-        // Adjust the button state: If it's on, turn it off and vice versa.
-        const currentState = button.getAttribute("data-status");
-        const newState = currentState === "on" ? "off" : "on";
-        button.setAttribute("data-status", newState);
-    
-        // Additional UI adjustment based on button type and new state.
-        if (button.id !== "horn") {
-            button.classList.toggle("btn-success", newState === "on");
-            button.classList.toggle("btn-secondary", newState === "off");
-        }
-    
-        // If this button has a text span to update, do so here.
-        if (button.querySelector("span")) {
-            button.querySelector("span").textContent = (newState === "on") ? "Stop Boat" : "Start Boat";
-        }
-    };    
     </script>
     
 {% endblock %}

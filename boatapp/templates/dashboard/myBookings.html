@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% include 'nav.html' %}
+
+{% block content %}
+<main style="margin-top: 58px">
+  <div class="container pt-4">
+    <h2>Mijn Reserveringen</h2>
+    <hr>
+      
+    <!-- Aankomende Reserveringen -->
+    <h4>Aankomende Reserveringen</h4>
+    <div class="accordion" id="upcomingBookingsAccordion">
+      {% for reserve in reservations %}
+      {% if reserve.date >= now %}  <!-- Assume now() is a function to get current date -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading{{ loop.index }}">
+          <button class="accordion-button {{ 'collapsed' if not loop.first }}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="{{ 'true' if loop.first else 'false' }}" aria-controls="collapse{{ loop.index }}">
+            {{ reserve.date_title }} <!-- assuming reserve.date is a readable string -->
+          </button>
+        </h2>
+        <div id="collapse{{ loop.index }}" class="accordion-collapse collapse {{ 'show' if loop.first else '' }}" aria-labelledby="heading{{ loop.index }}" data-bs-parent="#upcomingBookingsAccordion">
+          <div class="accordion-body">
+            <p><strong>Reserverings ID:</strong> <span class="data-value">{{ reserve.reserve_id }}</span></p>
+            <p><strong>Datum:</strong> <span class="data-value">{{ reserve.date }}</span></p>
+            <p><strong>Betaald:</strong> <span class="data-value">{{ 'Ja' if reserve.payed else 'Nee' }}</span></p>
+            <p><strong>Prijs:</strong> <span class="data-value">€{{ reserve.price }}</span></p>
+            <button type="button" class="btn btn-danger mt-3">Annuleer Reservering</button>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+      
+    <!-- Vorige Reserveringen -->
+    <h4 class="mt-4">Vorige Reserveringen</h4>
+    <div class="accordion" id="pastBookingsAccordion">
+      {% for reserve in reservations %}
+      {% if reserve.date < now %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingPast{{ loop.index }}">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePast{{ loop.index }}" aria-expanded="false" aria-controls="collapsePast{{ loop.index }}">
+            {{ reserve.date_title }}
+          </button>
+        </h2>
+        <div id="collapsePast{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="headingPast{{ loop.index }}" data-bs-parent="#pastBookingsAccordion">
+          <div class="accordion-body">
+            <p><strong>Reserverings ID:</strong> <span class="data-value">{{ reserve.reserve_id }}</span></p>
+            <p><strong>Datum:</strong> <span class="data-value">{{ reserve.date }}</span></p>
+            <p><strong>Betaald:</strong> <span class="data-value">{{ 'Ja' if reserve.payed else 'Nee' }}</span></p>
+            <p><strong>Prijs:</strong> <span class="data-value">€{{ reserve.price }}</span></p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Succes modal -->
+  {% if payment_status == 'success' %}
+    <div class="modal" tabindex="-1" id="paymentSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-icon text-center py-3">
+                  <i class="fas fa-check-circle fa-6x" style="color: green;"></i>
+              </div>
+              <div class="modal-header">
+                  <h3 class="modal-title">Betaling geslaagd!</h3>
+              </div>
+              <div class="modal-body">
+                  <p>Je betaling is gelukt, veel plezier met varen! <br> Lees de instructies op onze website om veilig het water op te gaan.</p>
+                  <!-- TODO: instructies op website -->
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <script>
+        var myModal = new bootstrap.Modal(document.getElementById('paymentSuccessModal'), {});
+        myModal.show();
+    </script>
+  {% endif %}
+</main>
+{% endblock content %}

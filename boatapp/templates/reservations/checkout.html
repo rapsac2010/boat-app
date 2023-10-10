@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% include 'nav.html' %}
+
+{% block content %}
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Checkout</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <h5>Your Reservation:</h5>
+        <p>Date: {{ reservation_date }}</p>
+        <p>Price: {{ price }}</p>
+        <p>Status: {{ payment_status }}</p>
+        
+        <form action="{{ payment_url }}">
+            <div class="mb-3">
+                <label for="discountCode" class="form-label">Discount Code</label>
+                <input type="text" class="form-control" id="discountCode" name="discount_code" placeholder="Enter code">
+            </div>
+            <button type="submit" class="btn btn-primary">Pay with Mollie</button>
+        </form>
+    </div>
+</body>
+{% endblock content %}

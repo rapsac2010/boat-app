@@ -16,17 +16,40 @@ print(__name__)
 def index():
     db = get_db()
     if g.user is not None:
-        pf_path = url_for('static', filename=f"uploads/images/{g.user['profile_fname']}")
-        return render_template('dashboard/index.html', pf_path = pf_path)
+
+        # Check if user has reservation today
+        today = datetime.now().strftime('%Y-%m-%d')
+        reservation = db.execute(
+            """
+            SELECT * FROM reservations WHERE renter_id = ? AND date(start_time) = ?
+            """,
+            (g.user['id'], today)
+        ).fetchone()
+
+        # print reservation for debug
+        reservation_bool = False
+        if reservation is not None:
+            reservation_bool = True
+            
+            # In that case also get control status of boat controls
+            boat_id = 1
+            boat_control = db.execute(
+                """
+                SELECT * FROM boat_control WHERE id = ?
+                """,
+                (boat_id,)
+            ).fetchone()
+            boat_control_json = {col: boat_control[col] for col in boat_control.keys()}
+            print(boat_control_json) # {'id': 1, 'boat_id': 1, 'last_updated': datetime.datetime(2023, 10, 10, 12, 47, 43), 'boat_on_lk': 0, 'boat_on_desired': 0, 'motor_lk': 0, 'motor_desired': 0, 'inverter_lk': 0, 'inverter_desired': 0, 'horn_lk': 
+                                     # 0, 'horn_desired': 0, 'lights_fun_lk': 0, 'lights_fun_desired': 0, 'light_nav_lk': 0, 'light_nav_desired': 0}
+        return render_template('dashboard/index.html', reservation=reservation_bool, boat_control=boat_control_json)
     else:
         return redirect(url_for('auth.login'))
     
 @bp.route('/calendar')
 @login_required
 def calendar():
-    pf_path = url_for('static', filename=f"uploads/images/{g.user['profile_fname']}")
-
-    return render_template('dashboard/calendar.html', pf_path = pf_path)
+    return render_template('dashboard/calendar.html')
 
 @bp.route('/get_update_data')
 @login_required
@@ -45,105 +68,3 @@ def get_update_data():
         return jsonify(data), 200
     else:
         return jsonify({"error": "No data found"}), 404
-
-@bp.route('/get_reservations')
-@login_required
-def get_reservations():
-    db = get_db()
-
-    # Retrieve start and end params from the request URL
-    start_date_str = request.args.get('start', '')
-    end_date_str = request.args.get('end', '')
-
-    try:
-        start_date = datetime.fromisoformat(start_date_str)
-        end_date = datetime.fromisoformat(end_date_str)
-    except ValueError:
-        return jsonify(error="Invalid date format"), 400
-    
-
-    reservations = db.execute(
-        """
-        SELECT * FROM reservations
-        WHERE start_time >= ? AND end_time <= ?
-        """,
-        (start_date, end_date)
-    ).fetchall()
-
-    close_db()
-
-    # Convert events to a format suitable for FullCalendar
-    reserve_list = [
-        {
-            "title": f"Reservation {event[0]}",
-            "start": event[3].isoformat(),
-            "end": event[4].isoformat(),
-            "boatId": event[1],
-            "renterId": event[2]
-        }
-        for event in reservations
-    ]
-    
-    # Return events as JSON
-    return jsonify(reserve_list)
-
-# @bp.route('/create', methods = ('GET', 'POST'))
-# @login_required
-# def create():
-#     if request.method == 'POST':
-#         title = request.form['title']
-#         body = request.form['body']
-#         error = None
-
-#         if not title:
-#             error = 'Title is required'
-        
-#         if error is not None:
-#             flash(error)
-#         else:
-#             db = get_db()
-#             db.execute("""
-#                 INSERT INTO post (title, body, author_id)
-#                  VALUES (?, ?, ?)
-#             """, (title, body, g.user['id']))
-#             db.commit()
-#             return redirect(url_for('blog.index')) #what happens if index here
-#     return render_template('blog/create.html')
-
-# @bp.route('/<int:id>/update', methods = ('GET', 'POST'))
-# @login_required
-# def update(id):
-#     post = get_post(id)
-
-#     if request.method == 'POST':
-#         title = request.form['title']
-#         body = request.form['body']
-#         error = None
-
-#         if not title:
-#             error = 'Title is required'
-        
-#         if error is not None:
-#             flash(error)
-#         else:
-#             db = get_db()
-#             db.execute(
-#                 'UPDATE post SET title = ?, body = ?'
-#                 ' WHERE id = ?',
-#                 (title, body, id)
-#             )
-#             db.commit()
-#             return redirect(url_for('blog.index'))
-        
-#     return render_template('blog/update.html', post = post)
-
-# @bp.route('/<int:id>/delete', methods = ('POST',))
-# @login_required
-# def delete(id):
-#     post = get_post(id)
-#     db = get_db()
-#     db.execute(
-#         'DELETE FROM post WHERE id = ?', (id,)
-#     )
-#     db.commit()
-#     return redirect(url_for('blog.index'))

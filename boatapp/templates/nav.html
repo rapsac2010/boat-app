@@ -36,7 +36,7 @@
                   <a class="nav-link" href="{{ url_for('dashboard.calendar') }}">Calendar</a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link" href="myBookings.html">My Bookings</a>
+                  <a class="nav-link" href="{{ url_for('reservations.my_bookings') }}">My Bookings</a>
               </li>
               <li class="nav-item">
                   <a class="nav-link" href="#">About</a>
@@ -78,7 +78,7 @@
                 aria-expanded="false"
             >
                 <img
-                    src="{{ pf_path }}"
+                    src="{{ url_for('static', filename='uploads/images/' + g.user['profile_fname']) }}"
                     class="rounded-circle"
                     height="40"
                     alt="avatar"

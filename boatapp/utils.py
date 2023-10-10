@@ -1,5 +1,28 @@
 from datetime import datetime, timedelta
 import pytz
+import os
+import flask
+from flask import current_app
+
+def get_public_url():
+    """
+    Return the base URL for this application, usable for sending to the mollie API.
+
+    This will normally return the flask root url, which points to 'localhost' on dev machines.
+    This is fine for limited local tests, but when you want to make test payments
+    against the Mollie API, you need an endpoint that is reachable from the public internet.
+
+    If the variable `MOLLIE_PUBLIC_URL` is available in the environment, we will use that instead
+    of the flask root URL.
+    """
+    try:
+        url = current_app.config['MOLLIE_PUBLIC_URL']
+    except KeyError:
+        url = flask.request.url_root
+
+    if not url.endswith("/"):
+        return f"{url}/"
+    return url
 
 def voltage_to_percent(voltage):
     # Ensure voltage is a float
